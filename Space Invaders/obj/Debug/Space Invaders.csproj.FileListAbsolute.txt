@@ -1,0 +1,7 @@
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\bin\Debug\Space Invaders.exe.config
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\bin\Debug\Space Invaders.exe
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\bin\Debug\Space Invaders.pdb
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\obj\Debug\Space Invaders.csproj.AssemblyReference.cache
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\obj\Debug\Space Invaders.csproj.CoreCompileInputs.cache
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\obj\Debug\Space Invaders.exe
+D:\Навчання\Вчу С#\Проекти\Space Invaders\Space Invaders\obj\Debug\Space Invaders.pdb
