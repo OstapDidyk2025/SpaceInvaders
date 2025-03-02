@@ -33,14 +33,14 @@ namespace Space_Invaders
             uicontroller.OnSpacePressed -= (obj, arg) => gameEmgine.Shot();
             uicontroller.OnEscapePressed -= (obj, arg) => gameEmgine.ExitGame();
             uicontroller.OnPPressed -= (obj, arg) => gameEmgine.PauseGame();
-            uicontroller.OnEnterPressed -= (obj, arg) => gameEmgine.RestartGame();
+            //uicontroller.OnEnterPressed -= (obj, arg) => gameEmgine.RestartGame();
 
             uicontroller.OnAPressed += (obj, arg) => gameEmgine.ClalculatePlayerMoveLeft();
             uicontroller.OnDPressed += (obj, arg) => gameEmgine.ClalculatePlayerMoveRight();
             uicontroller.OnSpacePressed += (obj, arg) => gameEmgine.Shot();
             uicontroller.OnEscapePressed += (obj, arg) => gameEmgine.ExitGame();
             uicontroller.OnPPressed += (obj, arg) => gameEmgine.PauseGame();
-            uicontroller.OnEnterPressed += (obj, arg) => gameEmgine.RestartGame();
+            //uicontroller.OnEnterPressed += (obj, arg) => gameEmgine.RestartGame();
 
             Thread uIControler = new Thread(uicontroller.StartListining);
 

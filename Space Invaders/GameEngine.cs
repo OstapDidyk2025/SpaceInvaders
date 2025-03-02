@@ -10,6 +10,7 @@ namespace Space_Invaders
         private Scene _scene;
         private bool _isNotPaused;
         private bool _isNotOver;
+        private bool _isMoveRight;
         private SceneRender _sceneRender;
         private GameSettings _settings;
         private Random _random;
@@ -32,6 +33,7 @@ namespace Space_Invaders
             _scene = Scene.GetScene(settings);
             _sceneRender = new SceneRender(settings);
             _random = new Random();
+            _isMoveRight = true;
         }
 
         public void Run(GameSettings settings) 
@@ -91,7 +93,7 @@ namespace Space_Invaders
 
         public void ClalculatePlayerMoveRight()
         {
-            if (_scene.playerShip.GameObjectPlace.XCordinate < _settings.ConsoleWidth)
+            if (_scene.playerShip.GameObjectPlace.XCordinate < _settings.ConsoleWidth - 2)
             {
                 _scene.playerShip.GameObjectPlace.XCordinate++;
             }
@@ -99,16 +101,87 @@ namespace Space_Invaders
 
         private void CalculateSwormMove()
         {
+            (GameObject, GameObject) closestsShips = ClosectToSide();
+            GameObject closestToRightShip = closestsShips.Item1;
+            GameObject closestToLeftShip = closestsShips.Item2;
+
+            if (_isMoveRight && closestToRightShip.GameObjectPlace.XCordinate >= _settings.ConsoleWidth - 2)
+            {
+                _isMoveRight = false;
+                CalculateDownMove();
+            }
+            else if (!_isMoveRight && closestToLeftShip.GameObjectPlace.XCordinate <= 1)
+            {
+                _isMoveRight = true;
+                CalculateDownMove();
+            }
+            else 
+            {
+                CalculateGorizontalMove();
+            }
+        }
+
+        private void CalculateDownMove()
+        {
             for (int i = 0; i < _scene.swarm.Count; i++)
             {
                 GameObject alienship = _scene.swarm[i];
-
                 alienship.GameObjectPlace.YCordinate++;
+
                 if (alienship.GameObjectPlace.YCordinate == _scene.playerShip.GameObjectPlace.YCordinate)
                 {
                     _isNotOver = false;
                 }
             }
+        }
+
+        private void CalculateGorizontalMove()
+        {
+
+            for (int i = 0; i < _scene.swarm.Count; i++)
+            {
+                GameObject alienship = _scene.swarm[i];
+                if (_isMoveRight)
+                {
+                    if (alienship.GameObjectPlace.XCordinate < _settings.ConsoleWidth - 2)
+                    { 
+                        alienship.GameObjectPlace.XCordinate++; 
+                    }
+                }
+                else if (!_isMoveRight)
+                {
+                    if (alienship.GameObjectPlace.XCordinate > 1)
+                    { 
+                        alienship.GameObjectPlace.XCordinate--; 
+                    }
+                }
+            }
+        }
+        private (GameObject, GameObject) ClosectToSide()
+        {
+            GameObject closestToRight = _scene.swarm[0];
+            GameObject closestToLeft = _scene.swarm[0];
+
+            for (int i = 1; i < _scene.swarm.Count; i++)
+            {
+                GameObject alienShip = _scene.swarm[i];
+
+                if (closestToRight.GameObjectPlace.XCordinate < alienShip.GameObjectPlace.XCordinate)
+                {
+                    closestToRight = alienShip;
+                }
+            }
+            for (int i = 1; i < _scene.swarm.Count; i++)
+            {
+                GameObject alienShip = _scene.swarm[i];
+
+                if (closestToLeft.GameObjectPlace.XCordinate > alienShip.GameObjectPlace.XCordinate)
+                {
+                    closestToLeft = alienShip;
+                }
+            }
+
+            return (closestToRight, closestToLeft);
         }
 
         public void Shot()
@@ -182,7 +255,7 @@ namespace Space_Invaders
                     if (missile.GameObjectPlace.Equals(alienShip.GameObjectPlace))
                     {
                         _scene.swarm.RemoveAt(x);
-                        CalculateDestroyedAliens();
+                        _settings.AlienDestroyedCount++;
 
                         _scene.playerShipMissile.RemoveAt(i);
 
@@ -225,7 +298,7 @@ namespace Space_Invaders
                     if (alienMissile.GameObjectPlace.Equals(groundPiece.GameObjectPlace))
                     {
                         _scene.ground.RemoveAt(x);
-                        CalculateDestroyedGrounds();
+                        _settings.GroundIsNotDestroyedCount--;
 
                         _scene.alienShipMissile.RemoveAt(i);
 
@@ -256,6 +329,7 @@ namespace Space_Invaders
             }
             return true;
         }
+
         public void ExitGame()
         {
             Environment.Exit(0);
@@ -278,21 +352,12 @@ namespace Space_Invaders
             }
         }
 
-        private void CalculateDestroyedAliens()
-        {
-            _settings.AlienDestroyedCount++;
-        }
-        private void CalculateDestroyedGrounds()
-        {
-            _settings.GroundIsNotDestroyedCount--;
-        }
-
         private void CalculateScore()
         {
             _settings.ScoreCount += 100 * _settings.AlienDestroyedCount + 50 * _settings.GroundIsNotDestroyedCount;
         }
 
-        public void RestartGame()
+       /* public void RestartGame()
         {
             Console.Clear();
 
@@ -318,7 +383,7 @@ namespace Space_Invaders
             shootingThread.Start();
             
             Run(_settings);
-        }
+        }*/
 
 
     }
